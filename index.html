@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>サンセット・ロード</title>
-<meta name="description" content="A small fan tribute to Reiko Takahashi's city pop song Sunset Road.">
+<meta name="description" content="A small fan tribute to Reiko Takahashi's 1987 city pop single Sunset Road.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
@@ -17,11 +17,9 @@
     --ink-soft: #8a7684;
     --sun: #f07a6a;
     --sun-2: #f7b38a;
-    --sea: #8fc3cf;
-    --sea-2: #c9e3e6;
-    --road: #e9d2c2;
     --stamp: #d9534f;
     --card: rgba(255, 252, 248, 0.82);
+    --line: rgba(240, 122, 106, 0.22);
     --shadow: 0 18px 50px -18px rgba(120, 70, 80, 0.45);
   }
   @media (prefers-color-scheme: dark) {
@@ -30,10 +28,8 @@
       --paper-2: #2a2230;
       --ink: #f4e8ee;
       --ink-soft: #b29fae;
-      --sea: #4f8593;
-      --sea-2: #2f4e57;
-      --road: #4a3a44;
       --card: rgba(44, 36, 50, 0.82);
+      --line: rgba(240, 122, 106, 0.3);
       --shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.7);
     }
   }
@@ -42,10 +38,8 @@
     --paper-2: #2a2230;
     --ink: #f4e8ee;
     --ink-soft: #b29fae;
-    --sea: #4f8593;
-    --sea-2: #2f4e57;
-    --road: #4a3a44;
     --card: rgba(44, 36, 50, 0.82);
+    --line: rgba(240, 122, 106, 0.3);
     --shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.7);
   }
 
@@ -64,19 +58,17 @@
       var(--paper);
     color: var(--ink);
     font-family: "Zen Maru Gothic", system-ui, sans-serif;
-    line-height: 1.8;
+    line-height: 1.85;
     min-height: 100vh;
-    padding-bottom: 300px;
     overflow-x: hidden;
   }
+  a { color: var(--sun); text-underline-offset: 3px; }
 
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 56px 16px 0;
-  }
+  /* ── layout: title | page | player ── */
+  .layout { padding: 56px 16px 300px; }
+  main { max-width: 600px; margin: 0 auto; }
 
-  header {
+  .title {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -99,6 +91,13 @@
     color: var(--ink-soft);
     padding-top: 0.6em;
   }
+  .vert.year {
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    padding-top: 0.6em;
+  }
   .stamp {
     align-self: flex-end;
     width: 46px; height: 46px;
@@ -116,13 +115,60 @@
     opacity: 0.85;
   }
 
+  .dock {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    width: min(380px, calc(100vw - 32px));
+    z-index: 10;
+  }
+
+  @media (min-width: 1100px) {
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) minmax(0, 600px) minmax(360px, 1fr);
+      gap: 40px;
+      padding: 72px 32px 120px;
+    }
+    main { margin: 0; }
+    .side { position: relative; }
+    .title {
+      position: sticky;
+      top: 72px;
+      justify-content: center;
+      margin: 0;
+    }
+    .vert { font-size: 3.6rem; }
+    .dock {
+      position: sticky;
+      top: 50vh;
+      left: auto;
+      bottom: auto;
+      transform: translateY(-50%);
+      width: min(380px, 100%);
+      margin: 0 auto;
+    }
+  }
+
+  /* ── content ── */
+  .en {
+    text-align: center;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+  }
+  @media (max-width: 520px) { .en { letter-spacing: 0.18em; font-size: 0.75rem; } }
+
   .scene {
     width: 100%;
     aspect-ratio: 4 / 3;
     border-radius: 36px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    margin-bottom: 44px;
+    margin-bottom: 52px;
   }
   .scene svg { display: block; width: 100%; height: 100%; }
   .sun { animation: sink 18s ease-in-out infinite alternate; }
@@ -132,40 +178,113 @@
   .shimmer:nth-child(3) { animation-delay: -2.6s; }
   @keyframes shimmer { 50% { opacity: 0.25; } }
 
-  .en {
-    text-align: center;
-    font-size: 0.85rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin: 0 0 28px;
-  }
-
-  section { margin: 0 auto 48px; max-width: 560px; }
+  section { margin: 0 auto 56px; }
   h2 {
     font-family: "Shippori Mincho", serif;
     font-weight: 500;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     letter-spacing: 0.3em;
     text-align: center;
-    margin: 0 0 18px;
+    margin: 0 0 6px;
   }
   h2::before, h2::after { content: "・"; color: var(--sun); }
+  .sub {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+  section > p { margin: 0 0 1em; }
+  .note p { text-align: center; }
 
-  .note p { margin: 0 0 1em; text-align: center; }
-
-  .credits {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 6px 22px;
+  .card {
     background: var(--card);
     border-radius: 24px;
     padding: 22px 26px;
     box-shadow: var(--shadow);
   }
-  .credits dt { color: var(--ink-soft); font-size: 0.9rem; }
-  .credits dd { margin: 0; }
-  .credits dd span { color: var(--ink-soft); font-size: 0.85rem; margin-left: 0.5em; }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .fact { text-align: center; padding: 18px 12px; }
+  .fact b {
+    display: block;
+    font-family: "Shippori Mincho", serif;
+    font-size: 1.5rem;
+    color: var(--sun);
+    line-height: 1.3;
+  }
+  .fact span { font-size: 0.82rem; color: var(--ink-soft); }
+
+  .record {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 4px 16px;
+    align-items: baseline;
+  }
+  .record .side-l {
+    font-family: "Shippori Mincho", serif;
+    font-weight: 700;
+    color: var(--sun);
+  }
+  .record small { color: var(--ink-soft); }
+  .record .hr { grid-column: 1 / -1; height: 1px; background: var(--line); margin: 8px 0; }
+
+  .people { display: grid; gap: 16px; }
+  .person h3 {
+    margin: 0 0 4px;
+    font-family: "Shippori Mincho", serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .person h3 small {
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-left: 0.6em;
+  }
+  .person .role {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    padding: 1px 10px;
+    border-radius: 99px;
+    background: var(--line);
+    margin-bottom: 8px;
+  }
+  .person p { margin: 0; font-size: 0.95rem; }
+
+  .timeline { list-style: none; margin: 0; padding: 0 0 0 22px; border-left: 2px dashed var(--line); }
+  .timeline li { position: relative; margin: 0 0 18px; }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: -29px; top: 0.55em;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--sun);
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+  .timeline b { font-family: "Shippori Mincho", serif; color: var(--sun); margin-right: 0.6em; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .links a {
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    padding: 8px 18px;
+    border-radius: 99px;
+    font-size: 0.9rem;
+  }
+  .links a:hover { color: var(--sun); }
 
   footer {
     text-align: center;
@@ -176,25 +295,17 @@
   }
   footer a { color: inherit; }
 
-  /* the floating player */
+  /* ── the floating player ── */
   .player {
-    position: fixed;
-    left: 50%;
-    bottom: 20px;
-    width: min(380px, calc(100vw - 32px));
     padding: 12px 12px 14px;
     border-radius: 32px;
     background: var(--card);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    box-shadow: var(--shadow), 0 0 0 1px rgba(240, 122, 106, 0.18);
+    box-shadow: var(--shadow), 0 0 0 1px var(--line);
     animation: float 6s ease-in-out infinite;
-    z-index: 10;
   }
-  @keyframes float {
-    0%, 100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, -10px); }
-  }
+  @keyframes float { 50% { transform: translateY(-10px); } }
   .player .frame {
     aspect-ratio: 16 / 9;
     border-radius: 22px;
@@ -219,96 +330,169 @@
 
   @media (prefers-reduced-motion: reduce) {
     .player, .sun, .shimmer { animation: none; }
-    .player { transform: translateX(-50%); }
   }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <div class="stamp" aria-hidden="true">夕<br>陽</div>
-    <p class="vert small">高橋玲子</p>
-    <h1 class="vert">サンセット・ロード</h1>
-  </header>
+<div class="layout">
 
-  <p class="en">Sunset Road · Reiko Takahashi</p>
+  <aside class="side">
+    <div class="title">
+      <div class="stamp" aria-hidden="true">夕<br>陽</div>
+      <p class="vert year">一九八七年</p>
+      <p class="vert small">高橋玲子</p>
+      <h1 class="vert">サンセット・ロード</h1>
+    </div>
+  </aside>
 
-  <div class="scene" role="img" aria-label="A soft sun setting over the sea, with a road curving along the shore">
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#fbd9c8"/>
-          <stop offset="0.6" stop-color="#f9c3b0"/>
-          <stop offset="1" stop-color="#f7b38a"/>
-        </linearGradient>
-        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#b7dbe0"/>
-          <stop offset="1" stop-color="#8fc3cf"/>
-        </linearGradient>
-        <clipPath id="horizon"><rect width="400" height="172"/></clipPath>
-      </defs>
-      <rect width="400" height="300" fill="url(#sky)"/>
-      <g clip-path="url(#horizon)">
-        <circle class="sun" cx="200" cy="150" r="58" fill="#f07a6a"/>
-      </g>
-      <g fill="none" stroke="#fff" stroke-linecap="round" opacity="0.7">
-        <path d="M70 70 q10 -8 20 0 q10 -8 20 0" stroke-width="2"/>
-        <path d="M290 54 q8 -6 16 0 q8 -6 16 0" stroke-width="2"/>
-      </g>
-      <rect y="172" width="400" height="128" fill="url(#sea)"/>
-      <g fill="#f07a6a">
-        <rect class="shimmer" x="150" y="182" width="100" height="4" rx="2"/>
-        <rect class="shimmer" x="168" y="196" width="64" height="4" rx="2"/>
-        <rect class="shimmer" x="184" y="210" width="32" height="4" rx="2"/>
-      </g>
-      <path d="M-10 300 C 80 260, 120 250, 180 236 S 330 214, 410 206 L 410 300 Z" fill="#e9d2c2"/>
-      <path d="M-10 300 C 80 270, 130 262, 190 250 S 330 228, 410 222" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" stroke-linecap="round" opacity="0.9"/>
-      <g transform="translate(300 214)">
-        <rect x="0" y="0" width="34" height="11" rx="5.5" fill="#3b2f3a"/>
-        <rect x="7" y="-6" width="17" height="8" rx="4" fill="#3b2f3a"/>
-        <circle cx="8" cy="11" r="3" fill="#fbf3ea"/>
-        <circle cx="26" cy="11" r="3" fill="#fbf3ea"/>
-      </g>
-      <g fill="#3b2f3a">
-        <rect x="58" y="200" width="3" height="56" rx="1.5"/>
-        <path d="M59.5 202 q-22 -4 -30 10 q14 -12 30 -10 q-10 -16 -28 -14 q18 2 28 14 q4 -18 22 -22 q-16 10 -22 22 q18 -8 32 4 q-18 -6 -32 -4z"/>
-      </g>
-    </svg>
-  </div>
+  <main>
+    <p class="en">Sunset Road · Reiko Takahashi · 1987</p>
 
-  <section class="note">
-    <h2>想い出</h2>
-    <p>A song that sounds like the last hour of a summer day:<br>warm asphalt, salt in the air, the radio low.</p>
-    <p>Bright strings and a lazy groove carry a quiet goodbye,<br>pure 80s Tokyo city pop, still glowing decades on.</p>
-    <p>This little page is a love letter to it. 🌅</p>
-  </section>
+    <div class="scene" role="img" aria-label="A soft sun setting over the sea, with a road curving along the shore">
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fbd9c8"/>
+            <stop offset="0.6" stop-color="#f9c3b0"/>
+            <stop offset="1" stop-color="#f7b38a"/>
+          </linearGradient>
+          <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#b7dbe0"/>
+            <stop offset="1" stop-color="#8fc3cf"/>
+          </linearGradient>
+          <clipPath id="horizon"><rect width="400" height="172"/></clipPath>
+        </defs>
+        <rect width="400" height="300" fill="url(#sky)"/>
+        <g clip-path="url(#horizon)">
+          <circle class="sun" cx="200" cy="150" r="58" fill="#f07a6a"/>
+        </g>
+        <g fill="none" stroke="#fff" stroke-linecap="round" opacity="0.7">
+          <path d="M70 70 q10 -8 20 0 q10 -8 20 0" stroke-width="2"/>
+          <path d="M290 54 q8 -6 16 0 q8 -6 16 0" stroke-width="2"/>
+        </g>
+        <rect y="172" width="400" height="128" fill="url(#sea)"/>
+        <g fill="#f07a6a">
+          <rect class="shimmer" x="150" y="182" width="100" height="4" rx="2"/>
+          <rect class="shimmer" x="168" y="196" width="64" height="4" rx="2"/>
+          <rect class="shimmer" x="184" y="210" width="32" height="4" rx="2"/>
+        </g>
+        <path d="M-10 300 C 80 260, 120 250, 180 236 S 330 214, 410 206 L 410 300 Z" fill="#e9d2c2"/>
+        <path d="M-10 300 C 80 270, 130 262, 190 250 S 330 228, 410 222" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="14 12" stroke-linecap="round" opacity="0.9"/>
+        <g transform="translate(300 214)">
+          <rect x="0" y="0" width="34" height="11" rx="5.5" fill="#3b2f3a"/>
+          <rect x="7" y="-6" width="17" height="8" rx="4" fill="#3b2f3a"/>
+          <circle cx="8" cy="11" r="3" fill="#fbf3ea"/>
+          <circle cx="26" cy="11" r="3" fill="#fbf3ea"/>
+        </g>
+        <g fill="#3b2f3a">
+          <rect x="58" y="200" width="3" height="56" rx="1.5"/>
+          <path d="M59.5 202 q-22 -4 -30 10 q14 -12 30 -10 q-10 -16 -28 -14 q18 2 28 14 q4 -18 22 -22 q-16 10 -22 22 q18 -8 32 4 q-18 -6 -32 -4z"/>
+        </g>
+      </svg>
+    </div>
 
-  <section>
-    <h2>クレジット</h2>
-    <dl class="credits">
-      <dt>歌</dt><dd>高橋玲子<span>Reiko Takahashi</span></dd>
-      <dt>作詞</dt><dd>佐藤純子<span>Junko Sato</span></dd>
-      <dt>作曲</dt><dd>浜田金吾<span>Kingo Hamada</span></dd>
-      <dt>編曲</dt><dd>奥慶一<span>Keiichi Oku</span></dd>
-    </dl>
-  </section>
+    <section class="note">
+      <h2>想い出</h2>
+      <p class="sub">A love letter</p>
+      <p>A song that sounds like the last hour of a summer day:<br>salt in the air, the sky turning peach, the radio low.</p>
+      <p>Bright strings and a lazy groove carry a quiet goodbye,<br>pure late-80s Tokyo city pop, still glowing decades on.</p>
+      <div class="facts">
+        <div class="card fact"><b>1987</b><span>released by Victor</span></div>
+        <div class="card fact"><b>4:14</b><span>running time</span></div>
+        <div class="card fact"><b>2nd</b><span>and last single</span></div>
+      </div>
+    </section>
 
-  <footer>
-    <p>A fan tribute. The song and recording belong to their rights holders. Audio streams from
-      <a href="https://www.youtube.com/watch?v=gATsNrzcr1s" target="_blank" rel="noopener">the upload on YouTube</a>.
-      Illustration is original.</p>
-  </footer>
-</main>
+    <section>
+      <h2>レコード</h2>
+      <p class="sub">The record</p>
+      <p>サンセット・ロード came out in 1987 as a 7-inch single on Victor, the second and final single from Reiko Takahashi (高橋玲子). She was one of the many young idol singers of the decade and left behind only a handful of recordings, which makes this one feel like a postcard from a career that barely had time to begin.</p>
+      <div class="card record">
+        <span class="side-l">A</span><span>サンセット・ロード <small>Sunset Road</small></span><small>4:14</small>
+        <span class="side-l">B</span><span>セプテンバー・ブルー <small>September Blue</small></span><small>4:03</small>
+        <span class="hr"></span>
+        <small>label</small><span>Victor</span><small></small>
+        <small>cat.</small><span>SV-9259 · 7″ 45 rpm</span><small></small>
+      </div>
+    </section>
 
-<aside class="player" aria-label="Now playing">
-  <div class="frame">
-    <iframe src="https://www.youtube-nocookie.com/embed/gATsNrzcr1s?rel=0&amp;modestbranding=1&amp;playsinline=1"
-      title="Reiko Takahashi – Sunset Road"
-      allow="autoplay; encrypted-media; picture-in-picture"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen loading="lazy"></iframe>
-  </div>
-  <div class="label"><span class="dot"></span>サンセット・ロード<small>高橋玲子</small></div>
-</aside>
+    <section>
+      <h2>作家たち</h2>
+      <p class="sub">The writers</p>
+      <p>The song came from a team who, as one Japanese collector put it, could hardly have made anything <em>but</em> city pop.</p>
+      <div class="people">
+        <div class="card person">
+          <span class="role">作曲 · music</span>
+          <h3>濱田金吾<small>Kingo Hamada</small></h3>
+          <p>A key name in Japanese AOR and city pop. He came up through the folk-rock group Craft (クラフト), went solo with <em>Manhattan in the Rain</em> (1980, partly recorded in New York), and wrote songs for singers such as Mariya Takeuchi, Hiromi Ohta, Hiromi Iwasaki, Mariko Takahashi and Hideki Saijo.</p>
+        </div>
+        <div class="card person">
+          <span class="role">編曲 · arrangement</span>
+          <h3>奥慶一<small>Keiichi Oku</small></h3>
+          <p>A keyboardist, composer and arranger born in Shiga in 1955. He debuted in 1979 as a member of the band Spectrum, released his solo album <em>Misty Morning</em> in 1981, and went on to arrange kayōkyoku hits and score anime. He is behind the shimmering arrangement you hear here.</p>
+        </div>
+        <div class="card person">
+          <span class="role">作詞 · lyrics</span>
+          <h3>佐藤純子<small>Junko Sato</small></h3>
+          <p>Wrote the words, a bittersweet summer goodbye by the sea.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>再発見</h2>
+      <p class="sub">Found again</p>
+      <p>City pop (シティポップ) was the glossy, urban pop of 1970s–80s Japan. It drew on AOR, funk, soft rock and boogie, and was made for car stereos and city nights. In the 2010s, YouTube recommendations and streaming carried it to listeners all over the world who had never heard of most of these artists.</p>
+      <p>Sunset Road was one of the songs swept up in that wave. Original copies of the single are now sought-after records, and the song has been streamed millions of times by listeners overseas, enough for one Japanese writer to call Takahashi a "reverse-imported" city pop artist.</p>
+    </section>
+
+    <section>
+      <h2>年表</h2>
+      <p class="sub">Timeline</p>
+      <ol class="timeline">
+        <li><b>1979</b>Keiichi Oku debuts with the band Spectrum.</li>
+        <li><b>1980</b>Kingo Hamada releases his solo debut, <em>Manhattan in the Rain</em>.</li>
+        <li><b>1987</b>Victor releases サンセット・ロード, with September Blue on the B-side.</li>
+        <li><b>2018</b>The song is included on the compilation <em>Tokyo 1980s Victor Edition</em>.</li>
+        <li><b>2023</b>The official audio is posted on YouTube and keeps finding new listeners.</li>
+        <li><b>2024</b>Victor puts out a remastered digital release on 25 December.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>もっと</h2>
+      <p class="sub">More</p>
+      <div class="links">
+        <a href="https://www.discogs.com/release/13633199" target="_blank" rel="noopener">Discogs</a>
+        <a href="https://vgmdb.net/album/145527" target="_blank" rel="noopener">VGMdb</a>
+        <a href="https://music.apple.com/jp/artist/919430400" target="_blank" rel="noopener">Apple Music</a>
+        <a href="https://www.deezer.com/en/track/3136897591" target="_blank" rel="noopener">Deezer</a>
+        <a href="https://www.youtube.com/watch?v=gATsNrzcr1s" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>A fan tribute. The song and recording belong to their rights holders. Audio streams from
+        <a href="https://www.youtube.com/watch?v=gATsNrzcr1s" target="_blank" rel="noopener">the upload on YouTube</a>.
+        Illustration is original.</p>
+    </footer>
+  </main>
+
+  <aside class="side">
+    <div class="dock">
+      <div class="player" aria-label="Now playing">
+        <div class="frame">
+          <iframe src="https://www.youtube-nocookie.com/embed/gATsNrzcr1s?rel=0&amp;modestbranding=1&amp;playsinline=1"
+            title="Reiko Takahashi – Sunset Road"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="label"><span class="dot"></span>サンセット・ロード<small>高橋玲子</small></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
 </body>
 </html>
